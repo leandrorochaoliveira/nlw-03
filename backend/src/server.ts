@@ -1,13 +1,19 @@
 import express from 'express';
+import path from 'path';
+import cors from 'cors';
 
+import 'express-async-errors'
 import './database/connection'
+
+import routes from './routes'
+import errorHander from './errors/handler'
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
-
-app.post('/orphanages', (request,response) => {
-    return response.json({message:'ola'});
-})
+app.use(routes)
+app.use('/uploads', express.static(path.join(__dirname,'..','uploads')))
+app.use(errorHander)
 
 app.listen(3333)
